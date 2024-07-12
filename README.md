@@ -1,4 +1,11 @@
-# GoDotEnv ![CI](https://github.com/joho/godotenv/workflows/CI/badge.svg) [![Go Report Card](https://goreportcard.com/badge/github.com/joho/godotenv)](https://goreportcard.com/report/github.com/joho/godotenv)
+# GoDotEnv
+
+Forked from this project <https://github.com/joho/godotenv>
+
+Addons :
+
+> Decrypting env files that was encrypted with ansible-vault. $ANSIBLE_VAULT_PASSWORD must contain decrypting key
+>
 
 A Go (golang) port of the Ruby [dotenv](https://github.com/bkeepers/dotenv) project (which loads env vars from a .env file).
 

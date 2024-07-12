@@ -27,14 +27,25 @@ import (
 const doubleQuoteSpecialChars = "\\\n\r\"!$`"
 
 // Parse reads an env file from io.Reader, returning a map of keys and values.
+// Also decrypt if file has ansible-vault encrypting prefix
+// Decryptyng key is expected in ANSIBLE_VAULT_PASSWORD environment variable
 func Parse(r io.Reader) (map[string]string, error) {
 	var buf bytes.Buffer
 	_, err := io.Copy(&buf, r)
 	if err != nil {
 		return nil, err
 	}
+	var byteData []byte = buf.Bytes()
+	stringData := buf.String()
+	if strings.HasPrefix(stringData, "$ANSIBLE_VAULT;") {
+		stringData, err = decrypt(stringData, os.Getenv("ANSIBLE_VAULT_PASSWORD"))
+		if err != nil {
+			return nil, err
+		}
+		byteData = []byte(stringData)
+	}
 
-	return UnmarshalBytes(buf.Bytes())
+	return UnmarshalBytes(byteData)
 }
 
 // Load will read your env file(s) and load them into ENV for this process.

@@ -29,6 +29,8 @@ COMMAND_ARGS: command and args you want to run
 
 example
   godotenv -f /path/to/something/.env,/another/path/.env fortune
+  
+  godotenv -o -f .env 'printenv'
 `
 	// if no args or -h flag
 	// print usage and return
