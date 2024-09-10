@@ -14,6 +14,7 @@
 package godotenv
 
 import (
+	"bufio"
 	"bytes"
 	"fmt"
 	"io"
@@ -36,9 +37,21 @@ func Parse(r io.Reader) (map[string]string, error) {
 		return nil, err
 	}
 	var byteData []byte = buf.Bytes()
+
 	stringData := buf.String()
-	if strings.HasPrefix(stringData, "$ANSIBLE_VAULT;") {
-		stringData, err = decrypt(stringData, os.Getenv("ANSIBLE_VAULT_PASSWORD"))
+	if bytes.HasPrefix(byteData, []byte("$ANSIBLE_VAULT;")) {
+		password := os.Getenv("ANSIBLE_VAULT_PASSWORD")
+		// Check if the password is empty
+		if strings.TrimSpace(password) == "" {
+			// Prompt the user for the password
+			fmt.Print("Enter ANSIBLE_VAULT_PASSWORD to decrypt contain of env file: ")
+			reader := bufio.NewReader(os.Stdin)
+			password, _ = reader.ReadString('\n')
+
+			// Trim any newline characters from the input
+			password = strings.TrimSpace(password)
+		}
+		stringData, err = decrypt(stringData, password)
 		if err != nil {
 			return nil, err
 		}

@@ -24,19 +24,19 @@ There is test coverage and CI for both linuxish and Windows environments, but I 
 As a library
 
 ```shell
-go get github.com/joho/godotenv
+go get github.com/direct-dev-ru/godotenv
 ```
 
 or if you want to use it as a bin command
 
 go >= 1.17
 ```shell
-go install github.com/joho/godotenv/cmd/godotenv@latest
+go install github.com/direct-dev-ru/godotenv/cmd/godotenv@latest
 ```
 
 go < 1.17
 ```shell
-go get github.com/joho/godotenv/cmd/godotenv
+go get github.com/direct-dev-ru/godotenv/cmd/godotenv
 ```
 
 ## Usage
@@ -47,6 +47,11 @@ Add your application configuration to your `.env` file in the root of your proje
 S3_BUCKET=YOURS3BUCKET
 SECRET_KEY=YOURSECRETKEYGOESHERE
 ```
+
+If your env file is encrypted by ansible vault ( starts with "$ANSIBLE_VAULT;")
+you must provide ANSIBLE_VAULT_PASSWORD env var to your application
+either from shell or inside your golang code (before godotenv.Load())
+If ANSIBLE_VAULT_PASSWORD is not provided, it will be asked from console
 
 Then in your Go app you can do something like
 
